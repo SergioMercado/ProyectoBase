@@ -27,31 +27,38 @@
   <div class="form-group">
     <label for="email">Email address:</label>
     <input type="email" class="form-control" name='email' id="email">
+    <input type="hidden" name='insert'>
   </div>
   
-  <button type="submit" class="btn btn-primary" id="insert">Submit</button>
+  <input type="submit" class="btn btn-primary" value="Enviar">
 </form>
 
 
 </div>
 
 <?php
-$con = mysqli_connect("localhost","root","","proyecto_crud") or die ("Error");
-//if(isset($_POST['insert'])){
+
+if(isset($_POST['insert'])){
 
   $usuario = $_POST['usr'];
   $password= $_POST['pwd'];
   $email = $_POST['email'];
 
+  $conexion = mysql_connect("localhost","root","");
+   
+  mysql_select_db("proyecto_crud", $conexion);
 
-  $insertar="INSERT INTO users VALUES ($usuario, $password, $email)";
- mysqli_query($con,$insertar);
 
-  //if($ejecutar){
-    //echo "<h3>Usuario Ingresado Correctamente</h3>";
-  //}
 
-//}
+  
+
+if(  mysql_query("INSERT INTO users (usuario, password, email) VALUES ($usuario, $password, $email)" ) ){
+  echo "<h3>Usuario Ingresado Correctamente</h3>";
+}
+
+mysql_close($conexion);
+
+}
 
 ?>
 
@@ -73,6 +80,7 @@ $con = mysqli_connect("localhost","root","","proyecto_crud") or die ("Error");
     </thead>
     
     <?php
+    $con = mysqli_connect("localhost","root","","proyecto_crud") or die ("Error");
     $consulta = "SELECT * FROM users";
     $ejecutar = mysqli_query($con, $consulta);
     $i=0;
